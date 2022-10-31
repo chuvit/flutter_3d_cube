@@ -40,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool lime = true;
   bool blue = true;
   bool pink = false;
+  bool orange = true;
 
   int blackPosition = 0;
 
@@ -104,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
           offset = Offset(
             // offset.dx + details.delta.dx,
             offset.dx + details.delta.dx,
-            offset.dy,
+            offset.dy + details.delta.dy,
           );
 
           double currentRotationY =
@@ -119,8 +120,11 @@ class _MyHomePageState extends State<MyHomePage> {
           // }
 
           // final newRotation = double.parse(currentRotation.toStringAsFixed(2));
-          if (currentRotationY >= 0.0 && currentRotationY <= 1.48 ||
-              currentRotationY > 4.8) {
+          if ((currentRotationY >= 0.0 && currentRotationY <= 1.48) &&
+                  !(currentRotationX >= 2.35 && currentRotationX <= 4.81) ||
+              currentRotationY > 4.8 ||
+              currentRotationX >= 4.81 ||
+              (currentRotationX >= 0.0 && currentRotationX <= 1.48)) {
             black = true;
           } else {
             black = false;
@@ -152,6 +156,12 @@ class _MyHomePageState extends State<MyHomePage> {
             pink = false;
           }
 
+          if (currentRotationX >= 3.24 && currentRotationX <= 6.19) {
+            orange = true;
+          } else {
+            orange = false;
+          }
+
           print(currentRotationX);
         });
       }),
@@ -172,6 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
               limeVisibility: lime,
               blueVisibility: blue,
               pinkVisibility: pink,
+              orangeVisibility: orange,
             ),
           ),
         ),
@@ -192,7 +203,8 @@ class Cube extends StatelessWidget {
       required this.purpleVisibility,
       required this.limeVisibility,
       required this.blueVisibility,
-      required this.pinkVisibility})
+      required this.pinkVisibility,
+      required this.orangeVisibility})
       : super(key: key);
 
   final bool blackVisibility;
@@ -200,6 +212,7 @@ class Cube extends StatelessWidget {
   final bool limeVisibility;
   final bool blueVisibility;
   final bool pinkVisibility;
+  final bool orangeVisibility;
 
   @override
   Widget build(BuildContext context) {
@@ -222,10 +235,13 @@ class Cube extends StatelessWidget {
             ..translate(100.0, 0.0, 0.0)
             ..rotateY(pi / 2),
           alignment: Alignment.center,
-          child: Container(
-            color: Colors.orange,
-            child: const FlutterLogo(
-              size: 200,
+          child: Visibility(
+            visible: orangeVisibility,
+            child: Container(
+              color: Colors.orange,
+              child: const FlutterLogo(
+                size: 200,
+              ),
             ),
           ),
         ),
